@@ -3,12 +3,14 @@ package br.com.ufrn.imd.supermarket_api.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "produtos")
@@ -19,6 +21,7 @@ public class ProdutoEntity {
     String marca;
     LocalDate dataFabricacao;
     LocalDate dataValidade;
+    @Enumerated(EnumType.STRING)
     Genero genero;
     String lote;
 
