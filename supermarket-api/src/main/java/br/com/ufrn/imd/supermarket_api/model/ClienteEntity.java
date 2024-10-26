@@ -7,28 +7,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "produtos")
-public class ProdutoEntity {
+@Table(name = "clientes")
+public class ClienteEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nomeProduto;
-    private String marca;
-    private LocalDate dataFabricacao;
-    private LocalDate dataValidade;
+    private String nome;
+    private String cpf;
     @Enumerated(EnumType.STRING)
     private Genero genero;
-    private String lote;
+    private Date dataNascimento;
 
     enum Genero {
-        COSMETICO,
-        ALIMENTICIO,
-        HIGIENE_PESSOAL,
-        LIMPEZA
-    };
+        MASCULINO,
+        FEMININO,
+        OUTRO
+    }
 }
