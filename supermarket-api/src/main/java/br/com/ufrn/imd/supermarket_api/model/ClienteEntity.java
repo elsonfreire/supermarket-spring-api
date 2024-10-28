@@ -22,7 +22,7 @@ public class ClienteEntity {
     private String cpf;
     @Enumerated(EnumType.STRING)
     private Genero genero;
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     enum Genero {
         MASCULINO,
