@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,15 @@ public class ClienteController {
         ClienteEntity clienteEntity = new ClienteEntity();
         BeanUtils.copyProperties(clienteDTO, clienteEntity);
 
+        //Converte o gênero e a data de nascimento de string para Enum e LocalDate, respectivamente
+        if (clienteDTO.genero() != null) {
+            clienteEntity.setGenero(ClienteEntity.Genero.valueOf(clienteDTO.genero()));
+        }
+
+        if (clienteDTO.dataNascimento() != null) {
+            clienteEntity.setDataNascimento(LocalDate.parse(clienteDTO.dataNascimento()));
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(clienteEntity));
     }
 
@@ -49,7 +59,24 @@ public class ClienteController {
         }
 
         ClienteEntity clienteEntity = cliente.get();
-        BeanUtils.copyProperties(clienteDTO, clienteEntity);
+
+        // Campos opcionais
+        if (clienteDTO.nome() != null) {
+            clienteEntity.setNome(clienteDTO.nome());
+        }
+
+        if (clienteDTO.cpf() != null) {
+            clienteEntity.setCpf(clienteDTO.cpf());
+        }
+
+        if (clienteDTO.genero() != null) {
+            clienteEntity.setGenero(ClienteEntity.Genero.valueOf(clienteDTO.genero()));
+        }
+
+        if (clienteDTO.dataNascimento() != null) {
+            clienteEntity.setDataNascimento(LocalDate.parse(clienteDTO.dataNascimento()));
+        }
+
         return ResponseEntity.ok().body(repository.save(clienteEntity));
     }
 
@@ -61,16 +88,4 @@ public class ClienteController {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-    //getAll - Um get quet retorna todos os elemenos presentes na
-    //tabela “produtos e clientes”;
-    //● getById - Retorna um único produto ou cliente baseado em seu ID;
-    //● postProduto/Cliente - Insere um novo produto/cliente na tabelas
-    //“produtos/clientes” a partir de JSON enviado na requisição;
-    //● putProduto/Cliente - Alterar qualquer das características passadas
-    //a partir de um JSON enviado na requisição. Apenas o ID será um
-    //elemento obrigatório a ser enviado;
-    //● DeleteProduto/Cliente - Deleta fisicamente um produto ou cliente
-    //da tabela “produtos” ou “clientes”
-
 }

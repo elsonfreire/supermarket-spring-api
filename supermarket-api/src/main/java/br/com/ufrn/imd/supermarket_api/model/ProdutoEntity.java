@@ -17,12 +17,15 @@ import java.time.LocalDate;
 public class ProdutoEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String nomeProduto;
     private String marca;
     private LocalDate dataFabricacao;
     private LocalDate dataValidade;
+
     @Enumerated(EnumType.STRING)
     private Genero genero;
+
     private String lote;
 
     enum Genero {

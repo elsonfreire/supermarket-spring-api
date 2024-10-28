@@ -18,13 +18,16 @@ import java.util.Date;
 public class ClienteEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String nome;
     private String cpf;
+
     @Enumerated(EnumType.STRING)
     private Genero genero;
+
     private LocalDate dataNascimento;
 
-    enum Genero {
+    public enum Genero {
         MASCULINO,
         FEMININO,
         OUTRO
