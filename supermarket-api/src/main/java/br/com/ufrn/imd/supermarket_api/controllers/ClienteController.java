@@ -50,9 +50,14 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(clienteEntity));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> putCliente(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
-        Optional<ClienteEntity> cliente = repository.findById(id);
+    @PutMapping
+    public ResponseEntity<Object> putCliente(@RequestBody ClienteDTO clienteDTO) {
+        // Campo obrigatório
+        if(clienteDTO.id() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID do cliente é obrigatório");
+        }
+
+        Optional<ClienteEntity> cliente = repository.findById(clienteDTO.id());
 
         if(cliente.isEmpty()) {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
