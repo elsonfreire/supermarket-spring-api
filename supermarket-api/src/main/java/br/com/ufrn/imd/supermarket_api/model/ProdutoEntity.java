@@ -28,7 +28,7 @@ public class ProdutoEntity {
 
     private String lote;
 
-    enum Genero {
+    public enum Genero {
         COSMETICO,
         ALIMENTICIO,
         HIGIENE_PESSOAL,
