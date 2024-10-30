@@ -1,3 +1,5 @@
+# Clientes
+
 GET http://localhost:8080/clientes
 
 GET http://localhost:8080/clientes/102
@@ -17,3 +19,25 @@ PUT http://localhost:8080/clientes/102
 }
 
 DELETE http://localhost:8080/clientes/102
+
+# Produtos
+
+GET http://localhost:8080/produtos
+
+GET http://localhost:8080/produtos/2
+
+POST http://localhost:8080/produtos
+{
+	"nomeProduto": "Leite",
+	"marca": "Betania",
+	"dataFabricacao": "2024-04-04",
+	"dataValidade": "2025-04-04",
+	"genero": "COSMETICO",
+	"lote": "401CA5"
+}
+
+PUT http://localhost:8080/produtos/2
+{
+	"marca": "Betânia",
+	"genero": "ALIMENTICIO",
+}
