@@ -1,0 +1,19 @@
+GET http://localhost:8080/clientes
+
+GET http://localhost:8080/clientes/102
+
+POST http://localhost:8080/clientes
+{
+	"nome": "Elson",
+	"cpf": "12345678901",
+	"genero": "MASCULINO",
+	"dataNascimento": "2004-07-05"
+}
+
+PUT http://localhost:8080/clientes/102
+{
+	"nome": "Elson Filho",
+	"cpf": "10210210284"
+}
+
+DELETE http://localhost:8080/clientes/102
