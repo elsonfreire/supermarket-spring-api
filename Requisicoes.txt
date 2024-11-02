@@ -1,16 +1,16 @@
 # Clientes
 
-GET http://localhost:8080/clientes
-
-GET http://localhost:8080/clientes/102
-
 POST http://localhost:8080/clientes
 {
-	"nome": "Elson",
+	"nome": "Maria",
 	"cpf": "12345678901",
 	"genero": "MASCULINO",
 	"dataNascimento": "2004-07-05"
 }
+
+GET http://localhost:8080/clientes
+
+GET http://localhost:8080/clientes/102
 
 PUT http://localhost:8080/clientes/102
 {
@@ -22,22 +22,24 @@ DELETE http://localhost:8080/clientes/102
 
 # Produtos
 
-GET http://localhost:8080/produtos
-
-GET http://localhost:8080/produtos/2
-
 POST http://localhost:8080/produtos
 {
-	"nomeProduto": "Leite",
-	"marca": "Betania",
-	"dataFabricacao": "2024-04-04",
-	"dataValidade": "2025-04-04",
+	"nomeProduto": "Margarina",
+	"marca": "Qualy",
+	"dataFabricacao": "2024-07-30",
+	"dataValidade": "2026-07-30",
 	"genero": "COSMETICO",
 	"lote": "401CA5"
 }
+
+GET http://localhost:8080/produtos
+
+GET http://localhost:8080/produtos/2
 
 PUT http://localhost:8080/produtos/2
 {
 	"marca": "Betânia",
 	"genero": "ALIMENTICIO",
 }
+
+DELETE http://localhost:8080/clientes/102
