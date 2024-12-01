@@ -4,6 +4,7 @@ import br.com.ufrn.imd.supermarket_api.dtos.PedidoDTO;
 import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
 import br.com.ufrn.imd.supermarket_api.model.PedidoEntity;
 import br.com.ufrn.imd.supermarket_api.repositories.PedidoRepository;
+import br.com.ufrn.imd.supermarket_api.services.PedidoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,28 +18,25 @@ import java.util.Optional;
 @RequestMapping("/pedidos")
 public class PedidoController {
     @Autowired
-    private PedidoRepository repository;
+    private PedidoService pedidoService;
 
     @GetMapping
     public ResponseEntity<List<PedidoEntity>> getAll() {
-        return ResponseEntity.ok().body(repository.findAll());
+        return ResponseEntity.ok().body(pedidoService.buscarPedidos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id) {
-        Optional<PedidoEntity> pedido = repository.findById(id);
-        if(pedido.isEmpty()) {
+        var pedido = pedidoService;
+        if(pedido == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
         }
-        return ResponseEntity.ok().body(pedido.get())
+        return ResponseEntity.ok().body(pedido);
     }
 
     @PostMapping
     public ResponseEntity<PedidoEntity> postPedido(@RequestBody PedidoDTO pedidoDTO) {
-        PedidoEntity pedidoEntity = new PedidoEntity();
-        BeanUtils.copyProperties(pedidoDTO, pedidoEntity);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(pedidoEntity));
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.salvarPedido(pedidoDTO));
     }
 
     @PutMapping("/{id}")
