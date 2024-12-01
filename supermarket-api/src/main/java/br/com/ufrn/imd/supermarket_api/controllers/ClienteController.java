@@ -42,7 +42,12 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> putCliente(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
-        return ResponseEntity.ok().body(clienteService.atualizarCliente(id, clienteDTO));
+        var cliente = clienteService.atualizarCliente(id, clienteDTO);
+        if(cliente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
+        }
+
+        return ResponseEntity.ok().body(cliente);
     }
 
     @DeleteMapping("/{id}")
