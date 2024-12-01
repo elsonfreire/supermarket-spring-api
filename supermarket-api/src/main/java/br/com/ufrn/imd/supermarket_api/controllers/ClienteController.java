@@ -47,9 +47,9 @@ public class ClienteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteCliente(@PathVariable Long id) {
-        boolean apagou = clienteService.apagarCliente(id);
+        boolean clienteExiste = clienteService.apagarCliente(id);
 
-        if(!apagou) {
+        if(!clienteExiste) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
         }
         return ResponseEntity.noContent().build();
