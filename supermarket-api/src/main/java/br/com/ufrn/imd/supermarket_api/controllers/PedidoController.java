@@ -65,4 +65,14 @@ public class PedidoController {
 
         return ResponseEntity.ok().body(repository.save(pedidoEntity));
     }
+
+    @PostMapping("/desativar")
+    public ResponseEntity<Object> deleteLogic(@PathVariable Long id) {
+        boolean pedidoExiste = pedidoService.deleteLogic(id);
+
+        if(!pedidoExiste) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
+        }
+        return ResponseEntity.ok().body("Pedido desativado com sucesso");
+    }
 }

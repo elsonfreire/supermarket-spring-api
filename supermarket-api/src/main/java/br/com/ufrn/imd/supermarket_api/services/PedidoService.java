@@ -43,6 +43,17 @@ public class PedidoService {
         return repository.save(pedidoEntity);
     }
 
+    public boolean deleteLogic(Long id) {
+        Optional<PedidoEntity> pedido = repository.findById(id);
+        if(pedido.isEmpty()) {
+            return false;
+        }
+
+        PedidoEntity pedidoEntity = pedido.get();
+        pedidoEntity.desativar();
+        return true;
+    }
+
     public PedidoEntity atualizarPedido() {
 
     }
