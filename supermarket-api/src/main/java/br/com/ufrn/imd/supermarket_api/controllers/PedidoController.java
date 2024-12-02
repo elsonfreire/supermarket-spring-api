@@ -1,11 +1,8 @@
 package br.com.ufrn.imd.supermarket_api.controllers;
 
-import br.com.ufrn.imd.supermarket_api.dtos.PedidoDTO;
-import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
+import br.com.ufrn.imd.supermarket_api.dtos.PedidoCreateDTO;
 import br.com.ufrn.imd.supermarket_api.model.PedidoEntity;
-import br.com.ufrn.imd.supermarket_api.repositories.PedidoRepository;
 import br.com.ufrn.imd.supermarket_api.services.PedidoService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +32,8 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<PedidoEntity> postPedido(@RequestBody PedidoDTO pedidoDTO) {
-        var pedido = pedidoService.salvarPedido(pedidoDTO);
+    public ResponseEntity<PedidoEntity> postPedido(@RequestBody PedidoCreateDTO pedidoCreateDTO) {
+        var pedido = pedidoService.salvarPedido(pedidoCreateDTO);
 
         if(pedido == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possível criar o pedido");
@@ -45,7 +42,7 @@ public class PedidoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> putPedido(@PathVariable Long id, @RequestBody PedidoDTO pedidoDTO) {
+    public ResponseEntity<Object> putPedido(@PathVariable Long id, @RequestBody PedidoCreateDTO pedidoCreateDTO) {
         Optional<PedidoEntity> pedido = repository.findById(id);
 
         if(pedido.isEmpty()) {
@@ -54,16 +51,16 @@ public class PedidoController {
 
         PedidoEntity pedidoEntity = pedido.get();
 
-        if (pedidoDTO.codigo() != null) {
-            pedidoEntity.setCodigo(pedidoDTO.codigo());
+        if (pedidoCreateDTO.codigo() != null) {
+            pedidoEntity.setCodigo(pedidoCreateDTO.codigo());
         }
 
-        if (pedidoDTO.produtos() != null) {
-            pedidoEntity.setProdutos(pedidoDTO.produtos());
+        if (pedidoCreateDTO.produtos() != null) {
+            pedidoEntity.setProdutos(pedidoCreateDTO.produtos());
         }
 
-        if (pedidoDTO.cliente() != null) {
-            pedidoEntity.setCliente(pedidoDTO.cliente());
+        if (pedidoCreateDTO.cliente() != null) {
+            pedidoEntity.setCliente(pedidoCreateDTO.cliente());
         }
 
         return ResponseEntity.ok().body(repository.save(pedidoEntity));
