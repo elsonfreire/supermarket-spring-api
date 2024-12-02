@@ -1,12 +1,11 @@
 package br.com.ufrn.imd.supermarket_api.services;
 
-import br.com.ufrn.imd.supermarket_api.dtos.ProdutoDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ProdutoCreateDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ProdutoUpdateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ProdutoEntity;
 import br.com.ufrn.imd.supermarket_api.repositories.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,27 +27,27 @@ public class ProdutoService {
         return produto.get();
     }
 
-    public ProdutoEntity salvarProduto(ProdutoDTO produtoDTO) {
+    public ProdutoEntity salvarProduto(ProdutoCreateDTO produtoCreateDTO) {
         ProdutoEntity produtoEntity = new ProdutoEntity();
-        BeanUtils.copyProperties(produtoDTO, produtoEntity);
+        BeanUtils.copyProperties(produtoCreateDTO, produtoEntity);
 
         //Converte o gênero e a data de nascimento de string para Enum e LocalDate, respectivamente
-        if (produtoDTO.genero() != null) {
-            produtoEntity.setGenero(ProdutoEntity.Genero.valueOf(produtoDTO.genero()));
+        if (produtoCreateDTO.genero() != null) {
+            produtoEntity.setGenero(ProdutoEntity.Genero.valueOf(produtoCreateDTO.genero()));
         }
 
-        if (produtoDTO.dataFabricacao() != null) {
-            produtoEntity.setDataFabricacao(LocalDate.parse(produtoDTO.dataFabricacao()));
+        if (produtoCreateDTO.dataFabricacao() != null) {
+            produtoEntity.setDataFabricacao(LocalDate.parse(produtoCreateDTO.dataFabricacao()));
         }
 
-        if (produtoDTO.dataValidade() != null) {
-            produtoEntity.setDataValidade(LocalDate.parse(produtoDTO.dataValidade()));
+        if (produtoCreateDTO.dataValidade() != null) {
+            produtoEntity.setDataValidade(LocalDate.parse(produtoCreateDTO.dataValidade()));
         }
 
         return repository.save(produtoEntity);
     }
 
-    public ProdutoEntity atualizarProduto(Long id, ProdutoDTO produtoDTO) {
+    public ProdutoEntity atualizarProduto(Long id, ProdutoUpdateDTO produtoUpdateDTO) {
         Optional<ProdutoEntity> produto = repository.findById(id);
 
         if(produto.isEmpty()) {
@@ -58,24 +57,24 @@ public class ProdutoService {
         ProdutoEntity produtoEntity = produto.get();
 
         // Campos opcionais
-        if (produtoDTO.nomeProduto() != null) {
-            produtoEntity.setNomeProduto(produtoDTO.nomeProduto());
+        if (produtoUpdateDTO.nomeProduto() != null) {
+            produtoEntity.setNomeProduto(produtoUpdateDTO.nomeProduto());
         }
 
-        if (produtoDTO.marca() != null) {
-            produtoEntity.setMarca(produtoDTO.marca());
+        if (produtoUpdateDTO.marca() != null) {
+            produtoEntity.setMarca(produtoUpdateDTO.marca());
         }
 
-        if (produtoDTO.dataFabricacao() != null) {
-            produtoEntity.setDataFabricacao(LocalDate.parse(produtoDTO.dataFabricacao()));
+        if (produtoUpdateDTO.dataFabricacao() != null) {
+            produtoEntity.setDataFabricacao(LocalDate.parse(produtoUpdateDTO.dataFabricacao()));
         }
 
-        if(produtoDTO.dataValidade() != null) {
-            produtoEntity.setDataValidade(LocalDate.parse(produtoDTO.dataValidade()));
+        if(produtoUpdateDTO.dataValidade() != null) {
+            produtoEntity.setDataValidade(LocalDate.parse(produtoUpdateDTO.dataValidade()));
         }
 
-        if (produtoDTO.genero() != null) {
-            produtoEntity.setGenero(ProdutoEntity.Genero.valueOf(produtoDTO.genero()));
+        if (produtoUpdateDTO.genero() != null) {
+            produtoEntity.setGenero(ProdutoEntity.Genero.valueOf(produtoUpdateDTO.genero()));
         }
 
         return repository.save(produtoEntity);

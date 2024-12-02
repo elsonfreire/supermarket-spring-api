@@ -1,18 +1,14 @@
 package br.com.ufrn.imd.supermarket_api.controllers;
 
-import br.com.ufrn.imd.supermarket_api.dtos.ProdutoDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ProdutoCreateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ProdutoEntity;
-import br.com.ufrn.imd.supermarket_api.repositories.ProdutoRepository;
 import br.com.ufrn.imd.supermarket_api.services.ProdutoService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos")
@@ -35,13 +31,13 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoEntity> postProduto(@RequestBody ProdutoDTO produtoDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.salvarProduto(produtoDTO));
+    public ResponseEntity<ProdutoEntity> postProduto(@RequestBody ProdutoCreateDTO produtoCreateDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.salvarProduto(produtoCreateDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> putProduto(@PathVariable Long id, @RequestBody ProdutoDTO produtoDTO) {
-        var produto = produtoService.atualizarProduto(id, produtoDTO);
+    public ResponseEntity<Object> putProduto(@PathVariable Long id, @RequestBody ProdutoCreateDTO produtoCreateDTO) {
+        var produto = produtoService.atualizarProduto(id, produtoCreateDTO);
         if(produto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }
