@@ -1,18 +1,12 @@
 package br.com.ufrn.imd.supermarket_api.controllers;
 
-import br.com.ufrn.imd.supermarket_api.dtos.ClienteDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ClienteCreateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
-import br.com.ufrn.imd.supermarket_api.repositories.ClienteRepository;
 import br.com.ufrn.imd.supermarket_api.services.ClienteService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
@@ -35,14 +29,14 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<ClienteEntity> postCliente(@RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<ClienteEntity> postCliente(@RequestBody ClienteCreateDTO clienteCreateDTO) {
         //Converte o gênero e a data de nascimento de string para Enum e LocalDate, respectivamente
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.salvarCliente(clienteDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.salvarCliente(clienteCreateDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> putCliente(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
-        var cliente = clienteService.atualizarCliente(id, clienteDTO);
+    public ResponseEntity<Object> putCliente(@PathVariable Long id, @RequestBody ClienteCreateDTO clienteCreateDTO) {
+        var cliente = clienteService.atualizarCliente(id, clienteCreateDTO);
         if(cliente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
         }

@@ -36,7 +36,12 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<PedidoEntity> postPedido(@RequestBody PedidoDTO pedidoDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.salvarPedido(pedidoDTO));
+        var pedido = pedidoService.salvarPedido(pedidoDTO);
+
+        if(pedido == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possível criar o pedido");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
     }
 
     @PutMapping("/{id}")

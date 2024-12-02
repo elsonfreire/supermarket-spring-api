@@ -1,12 +1,11 @@
 package br.com.ufrn.imd.supermarket_api.services;
 
-import br.com.ufrn.imd.supermarket_api.dtos.ClienteDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ClienteCreateDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ClienteUpdateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
 import br.com.ufrn.imd.supermarket_api.repositories.ClienteRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,22 +27,22 @@ public class ClienteService {
         return cliente.get();
     }
 
-    public ClienteEntity salvarCliente(ClienteDTO clienteDTO) {
+    public ClienteEntity salvarCliente(ClienteCreateDTO clienteCreateDTO) {
         ClienteEntity clienteEntity = new ClienteEntity();
-        BeanUtils.copyProperties(clienteDTO, clienteEntity);
+        BeanUtils.copyProperties(clienteCreateDTO, clienteEntity);
 
-        if (clienteDTO.genero() != null) {
-            clienteEntity.setGenero(ClienteEntity.Genero.valueOf(clienteDTO.genero()));
+        if (clienteCreateDTO.genero() != null) {
+            clienteEntity.setGenero(ClienteEntity.Genero.valueOf(clienteCreateDTO.genero()));
         }
 
-        if (clienteDTO.dataNascimento() != null) {
-            clienteEntity.setDataNascimento(LocalDate.parse(clienteDTO.dataNascimento()));
+        if (clienteCreateDTO.dataNascimento() != null) {
+            clienteEntity.setDataNascimento(LocalDate.parse(clienteCreateDTO.dataNascimento()));
         }
 
         return repository.save(clienteEntity);
     }
 
-    public ClienteEntity atualizarCliente(Long id, ClienteDTO clienteDTO) {
+    public ClienteEntity atualizarCliente(Long id, ClienteUpdateDTO clienteUpdateDTO) {
         Optional<ClienteEntity> cliente = repository.findById(id);
 
         if(cliente.isEmpty()) {
@@ -51,20 +50,20 @@ public class ClienteService {
         }
         ClienteEntity clienteEntity = cliente.get();
 
-        if (clienteDTO.nome() != null) {
-            clienteEntity.setNome(clienteDTO.nome());
+        if (clienteUpdateDTO.nome() != null) {
+            clienteEntity.setNome(clienteUpdateDTO.nome());
         }
 
-        if (clienteDTO.cpf() != null) {
-            clienteEntity.setCpf(clienteDTO.cpf());
+        if (clienteUpdateDTO.cpf() != null) {
+            clienteEntity.setCpf(clienteUpdateDTO.cpf());
         }
 
-        if (clienteDTO.genero() != null) {
-            clienteEntity.setGenero(ClienteEntity.Genero.valueOf(clienteDTO.genero()));
+        if (clienteUpdateDTO.genero() != null) {
+            clienteEntity.setGenero(ClienteEntity.Genero.valueOf(clienteUpdateDTO.genero()));
         }
 
-        if (clienteDTO.dataNascimento() != null) {
-            clienteEntity.setDataNascimento(LocalDate.parse(clienteDTO.dataNascimento()));
+        if (clienteUpdateDTO.dataNascimento() != null) {
+            clienteEntity.setDataNascimento(LocalDate.parse(clienteUpdateDTO.dataNascimento()));
         }
 
         return repository.save(clienteEntity);
