@@ -44,4 +44,8 @@ public class PedidoEntity {
     public void addProduto(ProdutoEntity produto) {
         this.produtos.add(produto);
     }
+
+    public void removeProduto(ProdutoEntity produto) {
+        this.produtos.remove(produto);
+    }
 }

@@ -4,7 +4,9 @@ import br.com.ufrn.imd.supermarket_api.dtos.PedidoCreateDTO;
 import br.com.ufrn.imd.supermarket_api.dtos.PedidoUpdateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
 import br.com.ufrn.imd.supermarket_api.model.PedidoEntity;
+import br.com.ufrn.imd.supermarket_api.model.ProdutoEntity;
 import br.com.ufrn.imd.supermarket_api.repositories.PedidoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ public class PedidoService {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private ProdutoService produtoService;
 
     public List<PedidoEntity> buscarPedido() {
         return repository.findAll();
@@ -85,5 +90,21 @@ public class PedidoService {
         }
         repository.deleteById(id);
         return true;
+    }
+
+    public PedidoEntity adicionarProduto(Long id, Long produto_id) {
+        PedidoEntity pedido = buscarPedido(id);
+        if(pedido == null) {
+            throw new EntityNotFoundException("Pedido não encontrado");
+        }
+
+        ProdutoEntity produto = produtoService.buscarProduto(produto_id);
+        if(produto == null) {
+            throw new EntityNotFoundException("Produto não encontrado");
+        }
+
+        pedido.addProduto(produto);
+
+        return repository.save(pedido);
     }
 }

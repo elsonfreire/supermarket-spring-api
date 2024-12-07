@@ -64,7 +64,7 @@ public class PedidoController {
         return ResponseEntity.ok().body("Pedido deletado com sucesso");
     }
 
-    @PostMapping("/desativar/{id}")
+    @PutMapping("/{id}/desativar")
     public ResponseEntity<Object> deleteLogic(@PathVariable Long id) {
         boolean pedidoExiste = pedidoService.deleteLogic(id);
 
@@ -72,5 +72,15 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/produtos/{produto_id}")
+    public ResponseEntity<Object> adicionarProduto(@PathVariable Long id, @PathVariable Long produto_id) {
+
+    }
+
+    @DeleteMapping("/{id}/produtos/{produto_id}")
+    public ResponseEntity<Object> removerProduto(@PathVariable Long id, @PathVariable Long produto_id) {
+
     }
 }
