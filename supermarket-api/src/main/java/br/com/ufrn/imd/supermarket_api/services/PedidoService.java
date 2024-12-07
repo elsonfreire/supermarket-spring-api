@@ -107,4 +107,20 @@ public class PedidoService {
 
         return repository.save(pedido);
     }
+
+    public PedidoEntity removerProduto(Long id, Long produto_id) {
+        PedidoEntity pedido = buscarPedido(id);
+        if(pedido == null) {
+            throw new EntityNotFoundException("Pedido não encontrado");
+        }
+
+        ProdutoEntity produto = produtoService.buscarProduto(produto_id);
+        if(produto == null) {
+            throw new EntityNotFoundException("Produto não encontrado");
+        }
+
+        pedido.removeProduto(produto);
+
+        return repository.save(pedido);
+    }
 }

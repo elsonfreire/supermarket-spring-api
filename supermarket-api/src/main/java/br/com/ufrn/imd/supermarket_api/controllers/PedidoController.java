@@ -76,11 +76,21 @@ public class PedidoController {
 
     @PostMapping("/{id}/produtos/{produto_id}")
     public ResponseEntity<Object> adicionarProduto(@PathVariable Long id, @PathVariable Long produto_id) {
-
+        try{
+            PedidoEntity pedido = pedidoService.adicionarProduto(id, produto_id);
+            return ResponseEntity.ok().body(pedido);
+        } catch(Error error) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}/produtos/{produto_id}")
     public ResponseEntity<Object> removerProduto(@PathVariable Long id, @PathVariable Long produto_id) {
-
+        try{
+            PedidoEntity pedido = pedidoService.removerProduto(id, produto_id);
+            return ResponseEntity.ok().body(pedido);
+        } catch(Error error) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.getMessage());
+        }
     }
 }
