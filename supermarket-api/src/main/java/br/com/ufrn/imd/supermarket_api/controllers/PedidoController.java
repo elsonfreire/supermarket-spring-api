@@ -1,6 +1,7 @@
 package br.com.ufrn.imd.supermarket_api.controllers;
 
 import br.com.ufrn.imd.supermarket_api.dtos.PedidoCreateDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.PedidoUpdateDTO;
 import br.com.ufrn.imd.supermarket_api.model.PedidoEntity;
 import br.com.ufrn.imd.supermarket_api.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<PedidoEntity> postPedido(@RequestBody PedidoCreateDTO pedidoCreateDTO) {
+    public ResponseEntity<Object> postPedido(@RequestBody PedidoCreateDTO pedidoCreateDTO) {
         var pedido = pedidoService.salvarPedido(pedidoCreateDTO);
 
         if(pedido == null) {
@@ -41,30 +42,30 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> putPedido(@PathVariable Long id, @RequestBody PedidoCreateDTO pedidoCreateDTO) {
-        Optional<PedidoEntity> pedido = repository.findById(id);
-
-        if(pedido.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
-        }
-
-        PedidoEntity pedidoEntity = pedido.get();
-
-        if (pedidoCreateDTO.codigo() != null) {
-            pedidoEntity.setCodigo(pedidoCreateDTO.codigo());
-        }
-
-        if (pedidoCreateDTO.produtos() != null) {
-            pedidoEntity.setProdutos(pedidoCreateDTO.produtos());
-        }
-
-        if (pedidoCreateDTO.cliente() != null) {
-            pedidoEntity.setCliente(pedidoCreateDTO.cliente());
-        }
-
-        return ResponseEntity.ok().body(repository.save(pedidoEntity));
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Object> putPedido(@PathVariable Long id, @RequestBody PedidoUpdateDTO pedidoUpdateDTO) {
+//        PedidoEntity pedido = pedidoService.buscarPedido(id);
+//
+//        if(pedido == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
+//        }
+//
+//        PedidoEntity pedidoEntity = pedido.get();
+//
+//        if (pedidoUpdateDTO.codigo() != null) {
+//            pedidoEntity.setCodigo(pedidoUpdateDTO.codigo());
+//        }
+//
+//        if (pedidoUpdateDTO.produtos() != null) {
+//            pedidoEntity.setProdutos(pedidoUpdateDTO.produtos());
+//        }
+//
+//        if (pedidoUpdateDTO.cliente() != null) {
+//            pedidoEntity.setCliente(pedidoUpdateDTO.cliente());
+//        }
+//
+//        return ResponseEntity.ok().body(repository.save(pedidoEntity));
+//    }
 
     @PostMapping("/desativar")
     public ResponseEntity<Object> deleteLogic(@PathVariable Long id) {

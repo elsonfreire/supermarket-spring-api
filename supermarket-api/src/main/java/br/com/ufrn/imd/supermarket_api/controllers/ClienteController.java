@@ -1,6 +1,7 @@
 package br.com.ufrn.imd.supermarket_api.controllers;
 
 import br.com.ufrn.imd.supermarket_api.dtos.ClienteCreateDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ClienteUpdateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
 import br.com.ufrn.imd.supermarket_api.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,8 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> putCliente(@PathVariable Long id, @RequestBody ClienteCreateDTO clienteCreateDTO) {
-        var cliente = clienteService.atualizarCliente(id, clienteCreateDTO);
+    public ResponseEntity<Object> putCliente(@PathVariable Long id, @RequestBody ClienteUpdateDTO clienteUpdateDTO) {
+        var cliente = clienteService.atualizarCliente(id, clienteUpdateDTO);
         if(cliente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
         }

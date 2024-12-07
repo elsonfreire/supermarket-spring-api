@@ -1,6 +1,7 @@
 package br.com.ufrn.imd.supermarket_api.controllers;
 
 import br.com.ufrn.imd.supermarket_api.dtos.ProdutoCreateDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.ProdutoUpdateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ProdutoEntity;
 import br.com.ufrn.imd.supermarket_api.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class ProdutoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> putProduto(@PathVariable Long id, @RequestBody ProdutoCreateDTO produtoCreateDTO) {
-        var produto = produtoService.atualizarProduto(id, produtoCreateDTO);
+    public ResponseEntity<Object> putProduto(@PathVariable Long id, @RequestBody ProdutoUpdateDTO produtoUpdateDTO) {
+        var produto = produtoService.atualizarProduto(id, produtoUpdateDTO);
         if(produto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }
