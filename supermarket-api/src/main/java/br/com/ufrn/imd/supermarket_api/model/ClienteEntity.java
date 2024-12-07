@@ -35,6 +35,6 @@ public class ClienteEntity {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pedidos")
+    @OneToMany(mappedBy = "cliente")
     private List<PedidoEntity> pedidos;
 }

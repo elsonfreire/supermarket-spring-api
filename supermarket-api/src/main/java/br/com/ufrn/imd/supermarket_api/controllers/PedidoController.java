@@ -20,12 +20,12 @@ public class PedidoController {
 
     @GetMapping
     public ResponseEntity<List<PedidoEntity>> getAll() {
-        return ResponseEntity.ok().body(pedidoService.buscarPedidos());
+        return ResponseEntity.ok().body(pedidoService.buscarPedido());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id) {
-        var pedido = pedidoService;
+        PedidoEntity pedido = pedidoService.buscarPedido(id);
         if(pedido == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
         }
@@ -42,38 +42,35 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Object> putPedido(@PathVariable Long id, @RequestBody PedidoUpdateDTO pedidoUpdateDTO) {
-//        PedidoEntity pedido = pedidoService.buscarPedido(id);
-//
-//        if(pedido == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
-//        }
-//
-//        PedidoEntity pedidoEntity = pedido.get();
-//
-//        if (pedidoUpdateDTO.codigo() != null) {
-//            pedidoEntity.setCodigo(pedidoUpdateDTO.codigo());
-//        }
-//
-//        if (pedidoUpdateDTO.produtos() != null) {
-//            pedidoEntity.setProdutos(pedidoUpdateDTO.produtos());
-//        }
-//
-//        if (pedidoUpdateDTO.cliente() != null) {
-//            pedidoEntity.setCliente(pedidoUpdateDTO.cliente());
-//        }
-//
-//        return ResponseEntity.ok().body(repository.save(pedidoEntity));
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> putPedido(@PathVariable Long id, @RequestBody PedidoUpdateDTO pedidoUpdateDTO) {
+        PedidoEntity pedido = pedidoService.atualizarPedido(id, pedidoUpdateDTO);
 
-    @PostMapping("/desativar")
+        if(pedido == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
+        }
+
+
+        return ResponseEntity.ok().body(pedido);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletePedido(@PathVariable Long id) {
+        boolean pedidoExiste = pedidoService.apagarPedido(id);
+
+        if(!pedidoExiste) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
+        }
+        return ResponseEntity.ok().body("Pedido deletado com sucesso");
+    }
+
+    @PostMapping("/desativar/{id}")
     public ResponseEntity<Object> deleteLogic(@PathVariable Long id) {
         boolean pedidoExiste = pedidoService.deleteLogic(id);
 
         if(!pedidoExiste) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
         }
-        return ResponseEntity.ok().body("Pedido desativado com sucesso");
+        return ResponseEntity.noContent().build();
     }
 }

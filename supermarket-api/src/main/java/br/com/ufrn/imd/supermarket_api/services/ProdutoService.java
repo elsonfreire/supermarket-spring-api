@@ -6,16 +6,18 @@ import br.com.ufrn.imd.supermarket_api.model.ProdutoEntity;
 import br.com.ufrn.imd.supermarket_api.repositories.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProdutoService {
     @Autowired
     private ProdutoRepository repository;
 
-    public List<ProdutoEntity> buscarProdutos() {
+    public List<ProdutoEntity> buscarProduto() {
         return repository.findAll();
     }
 
@@ -48,36 +50,34 @@ public class ProdutoService {
     }
 
     public ProdutoEntity atualizarProduto(Long id, ProdutoUpdateDTO produtoUpdateDTO) {
-        Optional<ProdutoEntity> produto = repository.findById(id);
+        ProdutoEntity produto = buscarProduto(id);
 
-        if(produto.isEmpty()) {
+        if(produto == null) {
             return null;
         }
 
-        ProdutoEntity produtoEntity = produto.get();
-
         // Campos opcionais
         if (produtoUpdateDTO.nomeProduto() != null) {
-            produtoEntity.setNomeProduto(produtoUpdateDTO.nomeProduto());
+            produto.setNomeProduto(produtoUpdateDTO.nomeProduto());
         }
 
         if (produtoUpdateDTO.marca() != null) {
-            produtoEntity.setMarca(produtoUpdateDTO.marca());
+            produto.setMarca(produtoUpdateDTO.marca());
         }
 
         if (produtoUpdateDTO.dataFabricacao() != null) {
-            produtoEntity.setDataFabricacao(LocalDate.parse(produtoUpdateDTO.dataFabricacao()));
+            produto.setDataFabricacao(LocalDate.parse(produtoUpdateDTO.dataFabricacao()));
         }
 
         if(produtoUpdateDTO.dataValidade() != null) {
-            produtoEntity.setDataValidade(LocalDate.parse(produtoUpdateDTO.dataValidade()));
+            produto.setDataValidade(LocalDate.parse(produtoUpdateDTO.dataValidade()));
         }
 
         if (produtoUpdateDTO.genero() != null) {
-            produtoEntity.setGenero(ProdutoEntity.Genero.valueOf(produtoUpdateDTO.genero()));
+            produto.setGenero(ProdutoEntity.Genero.valueOf(produtoUpdateDTO.genero()));
         }
 
-        return repository.save(produtoEntity);
+        return repository.save(produto);
     }
 
     public boolean apagarProduto(Long id) {

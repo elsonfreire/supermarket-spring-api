@@ -1,15 +1,20 @@
 package br.com.ufrn.imd.supermarket_api.services;
 
 import br.com.ufrn.imd.supermarket_api.dtos.PedidoCreateDTO;
+import br.com.ufrn.imd.supermarket_api.dtos.PedidoUpdateDTO;
 import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
 import br.com.ufrn.imd.supermarket_api.model.PedidoEntity;
 import br.com.ufrn.imd.supermarket_api.repositories.PedidoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PedidoService {
     @Autowired
     private PedidoRepository repository;
@@ -17,7 +22,7 @@ public class PedidoService {
     @Autowired
     private ClienteService clienteService;
 
-    public List<PedidoEntity> buscarPedidos() {
+    public List<PedidoEntity> buscarPedido() {
         return repository.findAll();
     }
 
@@ -33,7 +38,7 @@ public class PedidoService {
         PedidoEntity pedidoEntity = new PedidoEntity();
         BeanUtils.copyProperties(pedidoCreateDTO, pedidoEntity);
 
-        ClienteEntity cliente = clienteService.buscarCliente(pedidoCreateDTO.id());
+        ClienteEntity cliente = clienteService.buscarCliente(pedidoCreateDTO.cliente_id());
         if (cliente == null) {
             return null;
         }
@@ -44,17 +49,41 @@ public class PedidoService {
     }
 
     public boolean deleteLogic(Long id) {
-        Optional<PedidoEntity> pedido = repository.findById(id);
-        if(pedido.isEmpty()) {
+        PedidoEntity pedido = buscarPedido(id);
+        if(pedido == null) {
             return false;
         }
 
-        PedidoEntity pedidoEntity = pedido.get();
-        pedidoEntity.desativar();
+        pedido.desativar();
+        repository.save(pedido);
+
         return true;
     }
 
-//    public PedidoEntity atualizarPedido() {
-//
-//    }
+    public PedidoEntity atualizarPedido(Long id, PedidoUpdateDTO pedidoUpdateDTO) {
+        PedidoEntity pedido = buscarPedido(id);
+
+        if(pedido == null) {
+            return null;
+        }
+
+        if (pedidoUpdateDTO.codigo() != null) {
+            pedido.setCodigo(pedidoUpdateDTO.codigo());
+        }
+
+        if (pedidoUpdateDTO.cliente_id() != null) {
+            ClienteEntity cliente = clienteService.buscarCliente(pedidoUpdateDTO.cliente_id());
+            pedido.setCliente(cliente);
+        }
+
+        return repository.save(pedido);
+    }
+
+    public boolean apagarPedido(Long id) {
+        if(!repository.existsById(id)) {
+            return false;
+        }
+        repository.deleteById(id);
+        return true;
+    }
 }

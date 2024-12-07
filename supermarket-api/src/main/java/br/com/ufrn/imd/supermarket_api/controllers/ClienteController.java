@@ -17,7 +17,7 @@ public class ClienteController {
 
     @GetMapping
     public ResponseEntity<Object> getAll() {
-        return ResponseEntity.ok().body(clienteService.buscarClientes());
+        return ResponseEntity.ok().body(clienteService.buscarCliente());
     }
 
     @GetMapping("/{id}")
@@ -37,7 +37,7 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> putCliente(@PathVariable Long id, @RequestBody ClienteUpdateDTO clienteUpdateDTO) {
-        var cliente = clienteService.atualizarCliente(id, clienteUpdateDTO);
+        ClienteEntity cliente = clienteService.atualizarCliente(id, clienteUpdateDTO);
         if(cliente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
         }

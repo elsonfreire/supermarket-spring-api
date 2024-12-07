@@ -19,7 +19,7 @@ public class ProdutoController {
 
     @GetMapping
     public ResponseEntity<List<ProdutoEntity>> getAll() {
-        return ResponseEntity.ok().body(produtoService.buscarProdutos());
+        return ResponseEntity.ok().body(produtoService.buscarProduto());
     }
 
     @GetMapping("/{id}")
@@ -38,7 +38,7 @@ public class ProdutoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> putProduto(@PathVariable Long id, @RequestBody ProdutoUpdateDTO produtoUpdateDTO) {
-        var produto = produtoService.atualizarProduto(id, produtoUpdateDTO);
+        ProdutoEntity produto = produtoService.atualizarProduto(id, produtoUpdateDTO);
         if(produto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }

@@ -36,6 +36,6 @@ public class ProdutoEntity {
         LIMPEZA
     };
 
-    @ManyToMany(mappedBy = "pedidos")
-    List<PedidoEntity> pedidos;
+    @ManyToMany(mappedBy = "produtos")
+    private List<PedidoEntity> pedidos;
 }

@@ -7,5 +7,5 @@ public record PedidoCreateDTO(
     @NotBlank
     String codigo,
     @NotBlank
-    Long id_cliente)
+    Long cliente_id)
 {}

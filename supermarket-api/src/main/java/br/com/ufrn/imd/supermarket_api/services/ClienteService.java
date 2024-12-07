@@ -6,16 +6,18 @@ import br.com.ufrn.imd.supermarket_api.model.ClienteEntity;
 import br.com.ufrn.imd.supermarket_api.repositories.ClienteRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ClienteService {
     @Autowired
     private ClienteRepository repository;
 
-    public List<ClienteEntity> buscarClientes() {
+    public List<ClienteEntity> buscarCliente() {
         return repository.findAll();
     }
 
@@ -43,30 +45,29 @@ public class ClienteService {
     }
 
     public ClienteEntity atualizarCliente(Long id, ClienteUpdateDTO clienteUpdateDTO) {
-        Optional<ClienteEntity> cliente = repository.findById(id);
+        ClienteEntity cliente = buscarCliente(id);
 
-        if(cliente.isEmpty()) {
+        if(cliente == null) {
             return null;
         }
-        ClienteEntity clienteEntity = cliente.get();
 
         if (clienteUpdateDTO.nome() != null) {
-            clienteEntity.setNome(clienteUpdateDTO.nome());
+            cliente.setNome(clienteUpdateDTO.nome());
         }
 
         if (clienteUpdateDTO.cpf() != null) {
-            clienteEntity.setCpf(clienteUpdateDTO.cpf());
+            cliente.setCpf(clienteUpdateDTO.cpf());
         }
 
         if (clienteUpdateDTO.genero() != null) {
-            clienteEntity.setGenero(ClienteEntity.Genero.valueOf(clienteUpdateDTO.genero()));
+            cliente.setGenero(ClienteEntity.Genero.valueOf(clienteUpdateDTO.genero()));
         }
 
         if (clienteUpdateDTO.dataNascimento() != null) {
-            clienteEntity.setDataNascimento(LocalDate.parse(clienteUpdateDTO.dataNascimento()));
+            cliente.setDataNascimento(LocalDate.parse(clienteUpdateDTO.dataNascimento()));
         }
 
-        return repository.save(clienteEntity);
+        return repository.save(cliente);
     }
 
     public boolean apagarCliente(Long id) {
