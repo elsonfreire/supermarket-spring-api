@@ -28,7 +28,7 @@ public class PedidoService {
     private ProdutoService produtoService;
 
     public List<PedidoEntity> buscarPedido() {
-        return repository.findAll();
+        return repository.findByAtivo(true);
     }
 
     public PedidoEntity buscarPedido(Long id) {

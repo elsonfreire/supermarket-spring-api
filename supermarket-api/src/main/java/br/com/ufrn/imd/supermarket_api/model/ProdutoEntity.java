@@ -1,5 +1,6 @@
 package br.com.ufrn.imd.supermarket_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class ProdutoEntity {
         LIMPEZA
     };
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "produtos")
     private List<PedidoEntity> pedidos;
 }
